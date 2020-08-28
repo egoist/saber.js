@@ -1,0 +1,16 @@
+{
+  "name": "saber-plugin-shiki",
+  "version": "0.1.0",
+  "license": "MIT",
+  "files": [
+    "index.js"
+  ],
+  "main": "index.js",
+  "peerDependencies": {
+    "saber": ">=0.7.0",
+    "shiki": "^0.1.6"
+  },
+  "dependencies": {
+    "shiki": "^0.1.6"
+  }
+}

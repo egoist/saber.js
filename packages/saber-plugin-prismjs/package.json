@@ -10,7 +10,8 @@
     "prismjs": "1.17.1"
   },
   "peerDependencies": {
-    "prismjs": "^1.16.0"
+    "prismjs": "^1.16.0",
+    "saber": ">=0.7.0"
   },
   "dependencies": {
     "saber-highlighter-prism": "^0.3.4"
