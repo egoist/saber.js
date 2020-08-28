@@ -16,3 +16,12 @@
     - Clean
     - Modern
     - TailwindCSS
+
+- name: Klieh
+  npm: saber-theme-klieh
+  demo: https://saber-theme-klieh.netlify.com
+  repo: https://github.com/krmax44/saber-theme-klieh
+  tags:
+    - TechDemo
+    - Terminal
+    - Developer
