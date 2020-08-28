@@ -13,7 +13,7 @@ A word of caution: Saber is currently in beta stage. We encourage brave early ad
 
 ### Hexo / Hugo
 
-Hexo's layout system uses string-based template engines like ejs, pug et al. If you want client-side interactions, you need to create addtional JavaScript files and reference them in your layouts. This is pretty much the old way of building websites, which is good if that's all you need, but Saber lets you make use of more modern web frameworks.
+Hexo's layout system uses string-based template engines like ejs, pug et al. If you want client-side interactions, you need to create additional JavaScript files and reference them in your layouts. This is pretty much the old way of building websites, which is good if that's all you need, but Saber lets you make use of more modern web frameworks.
 
 Saber's layout system uses Vue.js by default. Layouts will be used to generate two bundles, a server bundle and a client bundle. The server bundle will be used to generate static HTML at build time, and the client bundle will be used for client-side interactions. Once the page is loaded on client-side, the client bundle will take over it to "hydrate" the static markup and make it interactive (hence universal).
 
