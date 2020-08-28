@@ -11,28 +11,30 @@ const ID = 'query-posts'
 exports.name = ID
 
 exports.apply = (api, options = {}) => {
-  api.hooks.onCreatePages.tap(ID, () => {
-    const allLocalePaths = new Set(
-      ['/'].concat(Object.keys(api.config.locales || {}))
-    )
-    for (const currentLocalePath of allLocalePaths) {
-      injectPosts({
-        currentLocalePath,
-        tagsMap: options.tagsMap,
-        categoriesMap: options.categoriesMap,
-        paginationOptions: {
-          perPage: options.perPage || 30,
-          firstPageOnly: options.firstPageOnly
-        },
-        permalinks: Object.assign(
-          {
-            category: '/categories/:slug',
-            tag: '/tags/:slug'
+  api.hooks.afterPlugins.tap(ID, () => {
+    api.hooks.onCreatePages.tap(ID, () => {
+      const allLocalePaths = new Set(
+        ['/'].concat(Object.keys(api.config.locales || {}))
+      )
+      for (const currentLocalePath of allLocalePaths) {
+        injectPosts({
+          currentLocalePath,
+          tagsMap: options.tagsMap,
+          categoriesMap: options.categoriesMap,
+          paginationOptions: {
+            perPage: options.perPage || 30,
+            firstPageOnly: options.firstPageOnly
           },
-          options.permalinks
-        )
-      })
-    }
+          permalinks: Object.assign(
+            {
+              category: '/categories/:slug',
+              tag: '/tags/:slug'
+            },
+            options.permalinks
+          )
+        })
+      }
+    })
   })
 
   function injectPosts({
@@ -123,7 +125,7 @@ exports.apply = (api, options = {}) => {
 
     // Add all posts to those pages
     if (injectPostsToPages.size > 0) {
-      injectToPages(injectPostsToPages, allPosts)
+      injectToPages(injectPostsToPages, allPosts, {}, paginationOptions)
     }
 
     // Add tag pages
@@ -148,7 +150,8 @@ exports.apply = (api, options = {}) => {
         tagPosts,
         {
           tag: getNameFromMap(tagsMap, tag)
-        }
+        },
+        paginationOptions
       )
     }
 
@@ -177,71 +180,72 @@ exports.apply = (api, options = {}) => {
             .split('/')
             .map(v => getNameFromMap(categoriesMap, v))
             .join('/')
-        }
+        },
+        paginationOptions
       )
     }
+  }
 
-    function injectToPages(pages, posts, pageProp) {
-      if (pages.size > 0) {
-        const date = new Date()
-        const sortedPosts = [...posts].sort((a, b) => {
-          const aDate = new Date(a.createdAt)
-          const bDate = new Date(b.createdAt)
-          return aDate > bDate ? -1 : 1
-        })
+  function injectToPages(pages, posts, pageProp, paginationOptions) {
+    if (pages.size > 0) {
+      const date = new Date()
+      const sortedPosts = [...posts].sort((a, b) => {
+        const aDate = new Date(a.createdAt)
+        const bDate = new Date(b.createdAt)
+        return aDate > bDate ? -1 : 1
+      })
 
-        for (const page of pages) {
-          const paginatedPosts = paginate(
-            sortedPosts,
-            Object.assign({}, paginationOptions, page.injectAllPosts)
-          )
-          const totalPages = paginatedPosts.length
+      for (const page of pages) {
+        const paginatedPosts = paginate(
+          sortedPosts,
+          Object.assign({}, paginationOptions, page.injectAllPosts)
+        )
+        const totalPages = paginatedPosts.length
 
-          for (const [index, posts] of paginatedPosts.entries()) {
-            const permalink =
-              index === 0
-                ? page.permalink
-                : urlJoin(page.permalink, `page/${index + 1}`)
-            const newPage = Object.assign({}, page, {
-              internal: Object.assign({}, page.internal, {
-                id:
-                  index === 0
-                    ? page.internal.id
-                    : `${page.internal.id}__page__${index}`,
-                parent:
-                  page.internal.parent ||
-                  (index === 0 ? undefined : page.internal.id)
-              }),
-              permalink,
-              createdAt: page.createdAt || date,
-              updatedAt: page.updatedAt || date,
-              posts,
-              pagination: {
-                hasPrev: index !== totalPages - 1,
-                hasNext: index !== 0,
-                total: totalPages,
-                current: index + 1,
-                prevLink: getPaginationLink(index + 2, page.permalink),
-                nextLink: getPaginationLink(index, page.permalink)
-              }
-            })
-            Object.assign(newPage, pageProp)
-            api.pages.createPage(newPage)
-          }
+        for (const [index, posts] of paginatedPosts.entries()) {
+          const permalink =
+            index === 0
+              ? page.permalink
+              : urlJoin(page.permalink, `page/${index + 1}`)
+          const newPage = Object.assign({}, page, {
+            internal: Object.assign({}, page.internal, {
+              id:
+                index === 0
+                  ? page.internal.id
+                  : `${page.internal.id}__page__${index}`,
+              parent:
+                page.internal.parent ||
+                (index === 0 ? undefined : page.internal.id)
+            }),
+            permalink,
+            createdAt: page.createdAt || date,
+            updatedAt: page.updatedAt || date,
+            posts,
+            pagination: {
+              hasPrev: index !== totalPages - 1,
+              hasNext: index !== 0,
+              total: totalPages,
+              current: index + 1,
+              prevLink: getPaginationLink(index + 2, page.permalink),
+              nextLink: getPaginationLink(index, page.permalink)
+            }
+          })
+          Object.assign(newPage, pageProp)
+          api.pages.createPage(newPage)
         }
       }
     }
   }
+}
 
-  function getPaginationLink(pageIndex, permalink) {
-    if (pageIndex === 1) {
-      return permalink
-    }
-
-    if (pageIndex === 0) {
-      return
-    }
-
-    return urlJoin(permalink, `page/${pageIndex}`)
+function getPaginationLink(pageIndex, permalink) {
+  if (pageIndex === 1) {
+    return permalink
   }
+
+  if (pageIndex === 0) {
+    return
+  }
+
+  return urlJoin(permalink, `page/${pageIndex}`)
 }
