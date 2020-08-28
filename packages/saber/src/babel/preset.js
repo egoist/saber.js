@@ -3,7 +3,7 @@ const path = require('path')
 const env = process.env.BABEL_ENV || process.env.NODE_ENV
 const isEnvTest = env === 'test'
 
-module.exports = (_, { isServer } = {}) => {
+module.exports = (_, { isServer, alwaysEnableTypeScript } = {}) => {
   const presets = [
     [
       require('@babel/preset-env'),
@@ -21,6 +21,13 @@ module.exports = (_, { isServer } = {}) => {
             // Exclude transforms that make all code slower
             exclude: ['transform-typeof-symbol']
           }
+    ],
+    [
+      require('@babel/preset-typescript'),
+      {
+        jsxPragma: 'h',
+        allExtensions: alwaysEnableTypeScript
+      }
     ]
   ]
 

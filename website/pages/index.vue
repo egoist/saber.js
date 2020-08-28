@@ -53,6 +53,7 @@
 
 
 <script>
+import Vue from 'vue'
 import Logo from '@/src/components/Logo.vue'
 import Vercel from '@/src/components/Vercel.vue'
 
@@ -60,12 +61,12 @@ export const attributes = {
   layout: 'index'
 }
 
-export default {
+export default Vue.extend({
   components: {
     Logo,
     Vercel
   }
-}
+})
 </script>
 
 <style scoped>

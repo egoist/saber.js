@@ -49,7 +49,7 @@ module.exports = (api, { type }) => {
 
   config.module
     .rule('js')
-    .test(/\.js$/)
+    .test([/\.jsx?$/, /\.tsx?$/])
     .include.add(filepath => {
       if (api.browserApi.has(filepath)) {
         return true

@@ -136,11 +136,11 @@ export class VueRenderer {
           .options(pageLoaderOptions)
 
       // Get the available extensions for pages
-      // Excluding .vue and .js pages because we handled them in their own rules
+      // Excluding .vue .jsx? .tsx? pages because we handled them in their own rules
       const { supportedExtensions } = api.transformers
       const pageExtensions = supportedExtensions
         .map(ext => new RegExp(`\\.${ext}$`))
-        .filter(re => !re.test('.js') && !re.test('.vue'))
+        .filter(re => !re.test('.js') && !re.test('.vue') && !re.test('.ts'))
         .concat(/\.saberpage$/)
 
       config.module

@@ -38,7 +38,7 @@ exports.apply = api => {
   })
 
   api.transformers.add('js', {
-    extensions: ['js'],
+    extensions: ['js', 'jsx', 'ts', 'tsx'],
     transform(page) {
       const { data } = require('../utils/parseAttributes')(
         page.content,

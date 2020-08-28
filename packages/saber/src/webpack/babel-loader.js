@@ -53,12 +53,17 @@ module.exports = babelLoader.custom(babel => {
         }
       }
 
+      const { filename = '' } = cfg.options
       options.presets.unshift(
         babel.createConfigItem(
           [
             require('../babel/preset'),
             {
-              isServer: customOptions.type === 'server'
+              isServer: customOptions.type === 'server',
+              // Like ts-loader's `appendTsSuffixTo: [/\.vue$/]` option
+              alwaysEnableTypeScript: filename.endsWith('.vue')
+                ? true
+                : undefined
             }
           ],
           {
