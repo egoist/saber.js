@@ -1,0 +1,22 @@
+{
+  "name": "saber-plugin-proxy",
+  "version": "1.0.0",
+  "description": "A webpack devServer like proxy plugin for saber",
+  "main": "lib/index.js",
+  "author": "sbencoding",
+  "license": "MIT",
+  "scripts": {
+    "dev:example": "saber example",
+    "build:example": "saber build example"
+  },
+  "files": [
+    "lib"
+  ],
+  "xo": false,
+  "peerDependencies": {
+    "saber": "^0.8.1"
+  },
+  "dependencies": {
+    "http-proxy-middleware": "^0.20.0"
+  }
+}
