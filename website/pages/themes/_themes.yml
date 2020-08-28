@@ -16,3 +16,13 @@
     - Clean
     - Modern
     - TailwindCSS
+
+- name: Paper
+  npm: saber-theme-paper
+  demo: https://geekplux.com
+  repo: https://github.com/geekplux/saber-theme-paper
+  tags:
+    - Blog
+    - Clean
+    - Pure
+    - Simple
