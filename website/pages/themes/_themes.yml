@@ -16,3 +16,12 @@
     - Clean
     - Modern
     - TailwindCSS
+
+- name: Beautiful Saber
+  npm: saber-theme-beautiful-saber
+  demo: https://beautiful-saber.netlify.com/
+  repo: https://github.com/techformist/saber-theme-beautiful-saber
+  tags:
+    - Blog
+    - Clean
+    - Minimal
