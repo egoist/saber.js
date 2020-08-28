@@ -27,6 +27,7 @@ Markdown example:
 
 ```markdown
 <!-- reference static/logo.png -->
+
 ![logo](/logo.png)
 ```
 

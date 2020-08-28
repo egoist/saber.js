@@ -1,7 +1,5 @@
 <template>
-  <button @click="increment">
-    {{ state.count }} * 2 = {{ doubleCount }}
-  </button>
+  <button @click="increment">{{ state.count }} * 2 = {{ doubleCount }}</button>
 </template>
 
 <script>

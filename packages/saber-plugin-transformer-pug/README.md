@@ -23,7 +23,7 @@ Try it by populating a `pages/try.pug`:
 strong hello world
 ```
 
-This page will be rendered as `/try.html`.
+This page will be rendered as `/try`.
 
 Like Markdown pages, you can only use frontmatter to define page data:
 

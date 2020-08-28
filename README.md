@@ -12,7 +12,7 @@ A static website generator built on top of Vue.js and webpack.
 
 📚 [Documentation](https://saber.land/docs)
 
-👩‍🏫 [Tutorial](https://saber.land/tutorial/tutorial.html)
+👩‍🏫 [Tutorial](https://saber.land/tutorial/tutorial)
 
 💬 [Discord Chat](https://chat.saber.land)
 

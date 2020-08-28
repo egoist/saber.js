@@ -5,32 +5,33 @@ layout: docs
 
 Layouts are Vue components that wrap around your page. They allow you to have the source code for your template in one place so you don’t have to repeat things like your navigation and footer on every page.
 
-You can use the `layout` attribute to use a layout component for specific page.
-
-Saber loads `*.{vue,js}` files from `./layouts` in your project root and [theme](./themes.md) directory as layout components, when the desired layout component does not exist, it will fallback to the `default` layout component in your layouts directory.
-
-Layout components have a prop named `page` which implements the [Page Interface](./page-interface.md) and allows you to access page data.
-
-The page contents will be available as the default slot in your layout component, for example:
-
-A page `pages/about.md`:
+You can set the `layout` key under [`page`](./pages.md#the-page-object) object to use a layout component from `layouts` folder:
 
 ```markdown
 ---
 title: Hello World
-layout: page
+layout: post
 ---
 
-Saber is fantastic!
+This is a page.
 ```
 
-and with the layout component `layouts/page.vue`:
+The parsed [`page`](./pages.md#the-page-object) object will look like:
+
+```js
+{
+  title: 'Hello World',
+  layout: 'post'
+}
+```
+
+This will be passed to the layout component as `page` prop, so you can use it like this in `layouts/post.vue`:
 
 ```vue
 <template>
   <div>
-    <h2 class="page-title">{{ page.title }}</h2>
-    <div class="page-content"><slot name="default" /></div>
+    <h1>{{ page.title }}</h1>
+    <slot name="default" />
   </div>
 </template>
 
@@ -41,19 +42,6 @@ export default {
 </script>
 ```
 
-This page will be rendered to the following HTML:
+Note that the page content is available as the default slot, you can use it like this: `<slot name="default"></slot>`.
 
-```html
-<div>
-  <h2 class="page-title">Hello World</h2>
-  <div class="page-content">
-    <p>Saber is fantastic!</p>
-  </div>
-</div>
-```
-
-## 404 page
-
-You can use the `404` layout to customize 404 page.
-
-In production build, Saber will also generate `/404.html` which will be automatically used as 404 error page by hosting platforms like GitHub pages and Netlify.
+You can also set the layout using ES6 `export const page = {}` as we mentioned in the [pages](./pages.md#the-page-object) documentation.

@@ -95,7 +95,7 @@ Your `CNAME` file should look like this:
 mywebsite.com
 ```
 
-If you are using a repository-level gh-pages deployment (`[username].github.io/[repository name]`), [set the `publicUrl` property in the Saber configuration file](#building-for-relative-paths).  This is not required for account-level gh-pages deployments (`[username].github.io`).
+If you are using a repository-level gh-pages deployment (`[username].github.io/[repository name]`), [set the `publicUrl` property in the Saber configuration file](#building-for-relative-paths). This is not required for account-level gh-pages deployments (`[username].github.io`).
 
 ### Step 4: Deploy the site by running `npm run deploy`
 
@@ -135,11 +135,10 @@ To host and deploy your site to Firebase.
 
 ```js
 // saber.browser.js
-export default ({
-  setHead
-}) => {
+export default ({ setHead }) => {
   setHead({
-      script: [{
+    script: [
+      {
         src: '/__/firebase/6.6.1/firebase-app.js',
         body: true
       },

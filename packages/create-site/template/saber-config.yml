@@ -11,14 +11,13 @@ themeConfig:
     - text: Home
       link: /
     - text: About
-      link: /about.html
+      link: /about
   social:
     twitter: saber_land
     github: egoist
     rss: true
 
 plugins:
-  - resolve: saber-plugin-query-posts
   - resolve: saber-plugin-feed
     options:
       atomFeed: true

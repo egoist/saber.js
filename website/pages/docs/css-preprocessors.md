@@ -15,7 +15,7 @@ Then you can import `.scss` and `.sass` files. If you want to import files from 
 
 ```scss
 // importing a css file from the nprogress node module
-@import '~nprogress/nprogress'; 
+@import '~nprogress/nprogress';
 ```
 
 ## Less
@@ -45,7 +45,7 @@ module.exports = {
         data: `@import "@/scss/variables.scss";`
       },
       // pass Less.js Options to less-loader
-      less:{
+      less: {
         // http://lesscss.org/usage/#less-options-strict-units `Global Variables`
         // `primary` is global variables fields name
         globalVars: {

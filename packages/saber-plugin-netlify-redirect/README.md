@@ -17,7 +17,7 @@ plugins:
   - resolve: saber-plugin-netlify-redirect
 ```
 
-Then you can create redirects using the [`pages.createRedirect`](<https://saber.land/docs/saber-instance.html#pages.createredirect(config)>) API.
+Then you can create redirects using the [`pages.createRedirect`](<https://saber.land/docs/saber-instance#pages.createredirect(config)>) API.
 
 Since Netlify automatically rewrites routes like `/about` to `/about.html`, this plugin will also create redirects for all `.html` routes so that `/about` will be redirected to `/about.html` when it does not exist.
 

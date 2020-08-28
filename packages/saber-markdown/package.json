@@ -2,9 +2,11 @@
   "name": "saber-markdown",
   "version": "0.1.6",
   "files": [
-    "dist"
+    "dist",
+    "/index.d.ts"
   ],
   "main": "dist/index.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "rollup -c",
     "prepublishOnly": "npm run build"
@@ -14,8 +16,9 @@
     "@babel/core": "7.6.4",
     "builtin-modules": "3.1.0",
     "markdown-it": "10.0.0",
+    "@types/markdown-it": "10.0.0",
     "rollup": "1.22.0",
-    "rollup-plugin-babel": "4.3.3",
+    "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-commonjs": "10.1.0",
     "rollup-plugin-json": "4.0.0",
     "rollup-plugin-node-resolve": "5.2.0",

@@ -72,7 +72,7 @@ export default {
       {
         name: 'description',
         content: '...my description'.
-        // ⬇️ Here 
+        // ⬇️ Here
         hid: 'description'
       }
     ]

@@ -3,15 +3,11 @@ import sum from '../src/sum'
 
 export default {
   render(h) {
-    return h(
-      'h1',
-      { class: this.$style.title },
-      ['lorem ', sum(1, 2)]
-    )
+    return h('h1', { class: this.$style.title }, ['lorem ', sum(1, 2)])
   }
 }
 
-export const attributes = {
+export const page = {
   title: 'Flat oppai',
   layout: 'foo'
 }

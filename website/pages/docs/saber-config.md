@@ -69,7 +69,7 @@ The base URL your application will be deployed at. If your website is located at
 
 By default we inline critical CSS and dynamically add new CSS when you nagivate to a new page.
 
-You can enable this option to extract all CSS into a single file. __Note that this option is always disable in development mode.__
+You can enable this option to extract all CSS into a single file. **Note that this option is always disable in development mode.**
 
 ### cssSourceMap
 
@@ -148,13 +148,13 @@ You can use the [limax](https://github.com/lovell/limax) which provides CJK supp
 
 Options for the internal markdown-it plugin for generating markdown headings and heading anchors.
 
-| Property                 | Type      | Default      | Description                                         |
-| ------------------------ | --------- | ------------ | --------------------------------------------------- |
-| `markdownHeadings` | `boolean` | `true`       | Inject markdown headings as `page.markdownHeadings` |
-| `permalink`              | `boolean` | `false`      | Generating permalinks.                              |
-| `permalinkComponent`     | `string`  | `saber-link` |                                                     |
-| `permalinkBefore`        | `boolean`  | `true`       | Inject permalink before heading text.               |
-| `permalinkSymbol`        | `string`  | `#`          | The permalink symbol.                               |
+| Property             | Type      | Default      | Description                                         |
+| -------------------- | --------- | ------------ | --------------------------------------------------- |
+| `markdownHeadings`   | `boolean` | `true`       | Inject markdown headings as `page.markdownHeadings` |
+| `permalink`          | `boolean` | `false`      | Generating permalinks.                              |
+| `permalinkComponent` | `string`  | `saber-link` |                                                     |
+| `permalinkBefore`    | `boolean` | `true`       | Inject permalink before heading text.               |
+| `permalinkSymbol`    | `string`  | `#`          | The permalink symbol.                               |
 
 ### options
 
@@ -187,7 +187,7 @@ Show line numbers in code blocks.
 ## permalinks
 
 - Type: `Permalinks` `(page: Page) => Permalinks`
-- Default: `/:posts/:slug.html` for posts, `/:slug.html` for other pages
+- Default: `/:posts/:slug` for posts, `/:slug` for other pages
 
 The template that is used to generate permalink for each page.
 

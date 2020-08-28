@@ -84,11 +84,11 @@ div
   a(href="/") ← Back Home
 ```
 
-Then navigate to `http://localhost:3000/about.html`:
+Then navigate to `http://localhost:3000/about`:
 
 <img src="./2.webp" class="browser-image" alt="pug page preview">
 
-`pages/about.pug` is mapped to `/about.html`, and when you click the `← Back Home` you will be redirected to the `index.html` we created in the last step.
+`pages/about.pug` is mapped to `/about`, and when you click the `← Back Home` you will be redirected to the `index.html` we created in the last step.
 
 Besides adding `.pug` page support, `saber-plugin-transformer-pug` also adds support for writing Pug in any `.vue` component:
 
@@ -164,9 +164,8 @@ exports.apply = api => {
   // Pages with extension .adoc or .asciidoc will automatically use this content type
   api.transformers.add('asciidoc', {
     extensions: ['adoc', 'asciidoc'],
-    // Parse the page
-    // And transform asciidoc to HTML
-    parse(page) {
+    // Transform the page fro asciidoc to HTML
+    transform(page) {
       // extract front matter
       const { body, frontmatter } = api.transformers.parseFrontmatter(
         page.content

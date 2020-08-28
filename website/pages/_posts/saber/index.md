@@ -20,7 +20,7 @@ $ npm install saber -D
 Populate `pages/index.md`:
 
 ```markdown
-Hello __Saber__!
+Hello **Saber**!
 ```
 
 Add a script to the `package.json` like this:
@@ -58,10 +58,10 @@ Our goal is to make Saber smaller than 50 MB.
 Sometimes convention over configuration is a good practice, for example, Saber uses the filesystem as the routing API, you can populate `pages/index.md` which maps to the route `/` with:
 
 ```markdown
-Hello __world__!
+Hello **world**!
 ```
 
-and then `pages/about.vue` which maps to `/about.html` with:
+and then `pages/about.vue` which maps to `/about` with:
 
 ```vue
 <template>
@@ -79,7 +79,7 @@ No configuration unless it's needed. Automatic hot-code reloading, error reporti
 
 ## Blogging, Layouts & Theming
 
-Just like Hexo, Saber uses `pages/_posts` folder for blog posts. If you populate a page at `pages/_posts/hello-world.md`, it will automatically map to `/posts/hello-world.html`.
+Just like Hexo, Saber uses `pages/_posts` folder for blog posts. If you populate a page at `pages/_posts/hello-world.md`, it will automatically map to `/posts/hello-world`.
 
 Saber has all the plugins that're required for building a blog:
 

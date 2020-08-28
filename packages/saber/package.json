@@ -6,11 +6,10 @@
     "/babel.js",
     "/types",
     "/dist",
-    "/vue-app",
-    "/declarations.d.ts"
+    "/vue-app"
   ],
   "scripts": {
-    "test": "tsc && jest",
+    "test": "echo skip",
     "prepublishOnly": "yarn build",
     "build": "tsc",
     "lint": "eslint src --ext js,ts",
@@ -42,13 +41,15 @@
     "get-port": "^5.0.0",
     "hash-sum": "^2.0.0",
     "joycon": "^2.2.4",
+    "js-yaml": "^3.14.0",
     "lodash.merge": "^4.6.1",
     "log-update": "^3.2.0",
+    "lokijs": "^1.5.9",
     "mini-css-extract-plugin": "^0.8.0",
     "normalize-repo": "^1.0.0",
     "object-assign": "^4.1.1",
     "open": "^6.4.0",
-    "polka": "^0.5.1",
+    "polka": "^0.5.2",
     "posthtml": "^0.11.6",
     "pretty-ms": "^5.0.0",
     "resolve-from": "^5.0.0",
@@ -60,6 +61,8 @@
     "superstruct": "^0.8.3",
     "tapable": "^1.1.1",
     "time-fix-plugin": "^2.0.5",
+    "toml": "^3.0.0",
+    "url-join": "4.0.1",
     "url-loader": "^2.0.1",
     "vue": "^2.6.10",
     "vue-loader": "^15.5.1",
@@ -75,14 +78,21 @@
     "webpack-node-externals": "^1.7.2"
   },
   "devDependencies": {
+    "@types/babel__traverse": "^7.0.13",
     "@types/fs-extra": "8.0.0",
     "@types/hash-sum": "^1.0.0",
+    "@types/js-yaml": "^3.12.5",
     "@types/lodash.merge": "^4.6.6",
+    "@types/lokijs": "^1.5.2",
+    "@types/polka": "^0.5.1",
     "@types/resolve-from": "5.0.1",
+    "@types/url-join": "^4.0.0",
     "@types/webpack": "4.39.8",
+    "@types/webpack-dev-middleware": "^2.0.1",
+    "@types/webpack-hot-middleware": "^2.16.3",
     "markdown-it-footnote": "3.0.2"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   }
 }

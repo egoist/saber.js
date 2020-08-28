@@ -11,7 +11,6 @@ interface ILogConstructorOptions {
   logLevel?: number
 }
 
-
 /**
  * Check if a value is `undefined`
  */
@@ -98,8 +97,4 @@ export class Log {
 
 const log = new Log()
 
-export {
-  log,
-  colors,
-  chars
-}
+export { log, colors, chars }

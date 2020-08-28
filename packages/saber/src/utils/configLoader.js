@@ -10,13 +10,12 @@ const joycon = new JoyCon({
 joycon.addLoader({
   test: /\.ya?ml$/,
   loadSync: filepath =>
-    require('./yaml.min').safeLoad(fs.readFileSync(filepath, 'utf8'))
+    require('js-yaml').safeLoad(fs.readFileSync(filepath, 'utf8'))
 })
 
 joycon.addLoader({
   test: /\.toml$/,
-  loadSync: filepath =>
-    require('./toml.min').parse(fs.readFileSync(filepath, 'utf8'))
+  loadSync: filepath => require('toml').parse(fs.readFileSync(filepath, 'utf8'))
 })
 
 module.exports = {

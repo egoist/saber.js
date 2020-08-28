@@ -1,0 +1,80 @@
+.page-title {
+  @apply text-4xl;
+  @apply font-bold;
+  @apply -mt-2;
+  @apply leading-tight;
+}
+
+.page-content p {
+  @apply my-5;
+}
+
+.page-content h2 {
+  @apply text-3xl;
+  @apply my-5;
+}
+
+.page-content h3 {
+  @apply text-2xl;
+  @apply my-5;
+}
+
+.page-content h4 {
+  @apply text-xl;
+  @apply my-5;
+}
+
+.page-content h5 {
+  @apply text-lg;
+  @apply my-5;
+}
+
+.page-content .header-anchor {
+  @apply float-left;
+  @apply opacity-0;
+  @apply text-theme;
+  margin-left: -0.87em;
+  padding-right: 0.23em;
+}
+
+.page-content h2:hover .header-anchor,
+.page-content h3:hover .header-anchor,
+.page-content h4:hover .header-anchor,
+.page-content h5:hover .header-anchor,
+.page-content h2:focus .header-anchor,
+.page-content h3:focus .header-anchor,
+.page-content h4:focus .header-anchor,
+.page-content h5:focus .header-anchor {
+  @apply opacity-100;
+}
+
+.page-content hr {
+  @apply border-gray-200;
+  @apply my-10;
+}
+
+.page-content ul {
+  @apply list-disc;
+  padding-left: 20px;
+}
+
+.page-content ol {
+  @apply list-decimal;
+  padding-left: 20px;
+}
+
+.footnote-item > :first-child {
+  @apply mt-0;
+}
+
+.footnote-item > :last-child {
+  @apply mb-0;
+}
+
+.page-content a {
+  @apply text-theme;
+}
+
+.page-content a:hover {
+  @apply underline;
+}

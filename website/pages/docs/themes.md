@@ -62,4 +62,3 @@ Finally open `website/pages/theme/_themes.yml` and add your theme, here's an exa
     - Clean
     - Minimal
 ```
-

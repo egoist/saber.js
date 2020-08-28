@@ -15,7 +15,6 @@ module.exports = {
   ],
   env: {
     node: true,
-    jest: true,
     es2017: true
   },
   rules: {

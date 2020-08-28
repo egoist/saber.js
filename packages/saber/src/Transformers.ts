@@ -1,4 +1,5 @@
 import { CreatePageInput, Page } from './Pages'
+import { parseFrontmatter } from './utils/parseFrontmatter'
 
 export interface Transformer {
   extensions: string[]
@@ -14,7 +15,7 @@ export class Transformers {
   }
 
   get parseFrontmatter() {
-    return require('./utils/parseFrontmatter')
+    return parseFrontmatter
   }
 
   add(contentType: string, transformer: Transformer) {

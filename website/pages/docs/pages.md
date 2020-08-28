@@ -3,60 +3,60 @@ title: Pages
 layout: docs
 ---
 
-Saber uses the file-system as the router API. Files with `.js`, `.vue` or  `.md` extension inside `./pages` folder will automatically become _web pages_, `.js` and `.vue` pages are treated as Vue components, `.md` files will also be converted to Vue components internally.
+Saber uses the file-system as the router API. Files with `.js`, `.vue` or `.md` extension inside `./pages` folder will automatically become _web pages_, `.js` and `.vue` pages are treated as Vue components, `.md` files will also be converted to Vue components internally.
 
 Try this `pages/index.md`:
 
 ```markdown
-Hello __Saber__!
+Hello **Saber**!
 ```
 
 And run `saber` in your project:
 
 ![page preview](@/images/simple-index-md-page.png)
 
-
 - `./pages/index.md` maps to `/`
-- `./pages/about.md` maps to `/about.html`
+- `./pages/about.md` maps to `/about`
 - `./pages/docs/index.md` maps to `/docs`
 - and so on..
 
-<small><i>Note: If you don't like the `.html` suffix, feel free to customize the [permalinks](./permalinks.md).</i></small>
+<small><i>Note: You can customize the generated [permalinks](./permalinks.md).</i></small>
 
-A page is made of two parts, the page data (optional) and the page content. __Page data is a mechanism for the page component to communicate with its layout component.__
+## The `page` object
 
-In a markdown page you can set page data with front matter:
+Internally every page is parsed into a `page` object, Saber uses the `page` object to control the behavior of the page.
+
+A use case of `page` object is to override `page.createdAt` which defaults to the creation time of the page. There're two ways to extend the `page` object, in a Markdown file, for example:
 
 ```markdown
 ---
-title: Hello World
-layout: page
+createdAt: 2020-01-01
 ---
-
-This is a page.
 ```
 
-Then this page will use the `page` layout from your `layouts` directory or pre-configured theme directory. The page data will be available in the layout component as `page` prop, e.g. in the layout component you can access the `title` via `page.title`. The page content will be available as the default slot, you can use it like this: `<slot name="default"></slot>`. Check out [Layouts](./layouts.md) for more details.
+As you see you can use front matter to extend `page` in Markdown pages.
 
-In a `.vue` or `.js` page, you can't use front matter to set page data, instead you can use the ES `export` keyword:
+In a Vue or JavaScript page, you can't use front matter, and instead you should use ES6 `export` keyword:
 
-```vue
-<template>
-  <div>This is a page.</div>
-</template>
-
+```js
 <script>
-export const data = {
-  title: 'Hello World',
-  layout: 'page'
+export const page = {
+  createdAt: '2020-01-01'
 }
+
+export default {}
 </script>
 ```
 
-Note that the value of `data` must be an object literal.
+Note that the value of the `page` export must be an object literal and accessible at build time.
 
-## Posts
+## Configure Your Page
 
-Posts live inside `./pages/_posts`, they are just a special kind of pages. The default value of `page.type` will be `post` instead of `page`.
+There are a few special page keys you can modify to control how pages behave.
 
-Check out [Page Interface](./page-interface.md) for more details.
+- `createdAt`: Override the default date (file creation time) to customize how the page is sorted in a collection.
+- `permalink`: Change the output target of the current page. [See docs](./permalinks.md).
+- `layout`: Wrap current page with a layout component found in `layouts` folder. [See docs](./layouts.md)
+- `pagination`: Enable to iterate over data. Output multiple routes from a single page.
+- `tags`: A single string or array that identifies that a specific page is part of a collection. [See docs](./collections.md)
+- `markdownHeadings`: Whether to inject Markdown headings to page data. [See docs]().

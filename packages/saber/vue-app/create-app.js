@@ -76,10 +76,7 @@ export default context => {
         ...head,
         htmlAttrs,
         title,
-        meta: [
-          ...defaultMeta,
-          ...(head.meta || [])
-        ]
+        meta: [...defaultMeta, ...(head.meta || [])]
       }
     },
     provide: {

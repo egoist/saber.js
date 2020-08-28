@@ -1,4 +1,3 @@
-/// <reference path="../declarations.d.ts" />
 import path from 'path'
 import http from 'http'
 import { fs } from 'saber-utils'
@@ -6,7 +5,7 @@ import { log, colors, Log } from 'saber-log'
 import resolveFrom from 'resolve-from'
 import merge from 'lodash.merge'
 import getPort from 'get-port'
-import { Pages, CreatePageInput } from './Pages'
+import { Pages } from './Pages'
 import { BrowserApi } from './BrowserApi'
 import { Transformers } from './Transformers'
 import configLoader from './utils/configLoader'
@@ -17,198 +16,17 @@ import { WebpackUtils } from './WebpackUtils'
 import { hooks } from './hooks'
 import { VueRenderer } from './vue-renderer'
 import { validateConfig, ValidatedSaberConfig } from './utils/validateConfig'
+import {
+  SaberOptions,
+  SaberConfig,
+  SaberConstructorOptions,
+  SaberPlugin,
+  ResolvedSaberPlugin,
+  WebpackContext
+} from './types'
+import { DataStore } from './DataStore'
 
-export interface SaberConstructorOptions {
-  cwd?: string
-  verbose?: boolean
-  dev?: boolean
-  inspectWebpack?: boolean
-}
-
-export interface SaberOptions {
-  cwd: string
-  verbose?: boolean
-  dev?: boolean
-  inspectWebpack?: boolean
-}
-
-export interface SiteConfig {
-  /** Apply to <html> tag */
-  lang: string
-  [k: string]: any
-}
-
-export interface ThemeConfig {
-  [k: string]: any
-}
-
-export interface SaberPlugin {
-  name: string
-  apply: (api: Saber, options: any) => void | Promise<void>
-  filterPlugins?: (
-    plugins: ResolvedSaberPlugin[],
-    options?: any
-  ) => ResolvedSaberPlugin[]
-}
-
-export interface SaberConfigPlugin {
-  resolve: string
-  options?: { [k: string]: any }
-}
-
-export interface ResolvedSaberPlugin extends SaberPlugin {
-  location: string
-  options?: any
-}
-
-export interface WebpackContext {
-  type: 'client' | 'server'
-  [k: string]: any
-}
-
-export type PageType = 'page' | 'post'
-
-export interface Permalinks {
-  /**
-   * Permalink format for normal pages
-   * @default `/:slug.html`
-   */
-  page?: string
-  /**
-   * Permalink format for posts
-   * @default `/posts/:slug.html`
-   */
-  post?: string
-}
-
-export interface SaberConfig {
-  /** The path or name of your theme */
-  theme?: string
-  siteConfig?: SiteConfig
-  themeConfig?: object
-  locales?: {
-    [localePath: string]: {
-      siteConfig?: SiteConfig
-      themeConfig?: ThemeConfig
-    }
-  }
-  /**
-   * Customize permalink format based on page types (page or post)
-   */
-  permalinks?: Permalinks | ((page: CreatePageInput) => Permalinks)
-  /** Build configurations */
-  build?: {
-    /**
-     * The path to output generated files
-     * Defaul to `./public`
-     */
-    outDir?: string
-    /**
-     * The root path where your website is localed
-     * Default to `/`
-     */
-    publicUrl?: string
-    /**
-     * Extract CSS into standalone files
-     * Default to `false`
-     */
-    extractCSS?: boolean
-    /**
-     * Toggle sourcemap for CSS
-     * Default to `false`
-     */
-    cssSourceMap?: boolean
-    /**
-     * Options for CSS loaders
-     */
-    loaderOptions?: {
-      /** sass-loader */
-      sass?: any
-      /** less-loader */
-      less?: any
-      /** stylus-loader */
-      stylus?: any
-      /** css-loader */
-      css?: any
-      /** postcss-loader */
-      postcss?: any
-    }
-    /**
-     * Toggle cache for webpack
-     * Default to `true`
-     */
-    cache?: boolean
-    /**
-     * Compile pages on demand
-     * @beta
-     */
-    lazy?: boolean
-  }
-  server?: {
-    host?: string
-    port?: number
-  }
-  plugins?: Array<string | SaberConfigPlugin>
-  markdown?: {
-    /** The path to a module or npm package name that slugifies the markdown headers. */
-    slugify?: string
-    /**
-     * Options for the internal markdown-it plugin for generating markdown headings and heading anchors.
-     */
-    headings?: {
-      /**
-       * Inject markdown headings as `page.markdownHeadings`
-       * @default `true`
-       */
-      markdownHeadings?: boolean
-      /**
-       * Generating permalinks
-       * @default `false`
-       */
-      permalink?: boolean
-      permalinkComponent?: string
-      /**
-       * Inject permalink before heading text.
-       * @default `true`
-       */
-      permalinkBefore?: string
-      /**
-       * The permalink symbol.
-       * @default `'#'`
-       */
-      permalinkSymbol?: string
-    }
-    /**
-     * Show line numbers in code blocks
-     * @default `false`
-     */
-    lineNumbers?: boolean
-    /** markdown-it plugins */
-    plugins?: MarkdownPlugin[]
-    /** markdown-it options */
-    options?: {
-      [k: string]: any
-    }
-  }
-  template?: {
-    /**
-     * Whether to open external links in new tab.
-     * @default `true`
-     */
-    openLinkInNewTab?: boolean
-    /**
-     * A set of plugins that are used to transform Vue template.
-     */
-    plugins?: any[]
-  }
-}
-
-export interface MarkdownPlugin {
-  resolve: string
-  options?: {
-    [k: string]: any
-  }
-}
+export { SaberConfig, SaberConstructorOptions, SaberPlugin }
 
 export class Saber {
   opts: SaberOptions
@@ -223,6 +41,7 @@ export class Saber {
   hooks: typeof hooks
   transformers: Transformers
   runtimePolyfills: Set<string>
+  dataStore: DataStore
   compilers: {
     [k: string]: Compiler
   }
@@ -247,6 +66,7 @@ export class Saber {
     this.pages = new Pages(this)
     this.browserApi = new BrowserApi(this)
     this.webpackUtils = new WebpackUtils(this)
+    this.dataStore = new DataStore()
     this.log = log
     this.colors = colors
     this.utils = require('saber-utils')
@@ -372,7 +192,7 @@ export class Saber {
     }
 
     // Load user plugins
-    await this.hooks.beforePlugins.promise()
+    await this.hooks.prePlugins.promise()
 
     const userPlugins = this.getUserPlugins()
     if (userPlugins.length > 0) {
@@ -387,7 +207,7 @@ export class Saber {
       await this.applyPlugin(plugin, plugin.options, plugin.location)
     }
 
-    await this.hooks.afterPlugins.promise()
+    await this.hooks.postPlugins.promise()
   }
 
   async applyPlugin(
@@ -474,12 +294,12 @@ export class Saber {
 
   getWebpackConfig(opts: WebpackContext) {
     opts = Object.assign({ type: 'client' }, opts)
-    const chain = require('./webpack/webpack.config')(this, opts)
+    const chain = require('./webpack/webpack.config').default(this, opts)
     this.hooks.chainWebpack.call(chain, opts)
     const config = this.hooks.getWebpackConfig.call(chain.toConfig(), opts)
 
     if (this.opts.inspectWebpack) {
-      require('./utils/inspectWebpack')(config, opts.type)
+      require('./utils/inspectWebpack').default(config, opts.type)
     }
 
     return config
@@ -545,7 +365,9 @@ export class Saber {
     await this.prepare()
     await this.run()
 
-    const server = http.createServer(this.renderer.getRequestHandler())
+    const server = http.createServer(
+      this.renderer.getRequestHandler() as http.RequestListener
+    )
 
     // Make sure the port is available
     const { host, port = 3000 } = this.config.server
@@ -577,11 +399,11 @@ export class Saber {
     ]
   }
 
-  localResolve(name: string): string {
+  localResolve(name: string): string | null {
     return require('resolve-from').silent(this.opts.cwd, name)
   }
 
-  localRequire(name: string): any {
+  localRequire<T = any>(name: string): T {
     const resolved = this.localResolve(name)
     return resolved && require(resolved)
   }

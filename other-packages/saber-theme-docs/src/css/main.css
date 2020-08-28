@@ -1,0 +1,66 @@
+:root {
+  --theme-color: theme('colors.teal.500');
+  --sidebar-menu-active-bg: theme('colors.teal.100');
+  --code-language-color: inherit;
+  --code-span-bg: theme('colors.yellow.50');
+
+  --header-height: theme('height.16');
+}
+
+.main {
+  margin-top: var(--header-height);
+  @apply py-8;
+}
+
+.saber-highlight {
+  border-radius: 4px;
+  background: #011627;
+}
+
+.saber-highlight:before {
+  color: var(--code-language-color);
+  background: rgba(201, 167, 255, 0.2);
+  border-radius: 0 0 4px 4px;
+  top: 0;
+  padding: 0 10px;
+}
+
+.code-line.highlighted {
+  background: rgba(201, 167, 255, 0.2);
+  box-shadow: inset 3px 0 0 0 rgb(201, 167, 255);
+}
+
+:not(pre) > code {
+  background: var(--code-span-bg);
+  @apply p-1;
+  @apply text-sm;
+  @apply rounded;
+}
+
+/** Table style begin */
+
+table,
+td,
+th {
+  border-collapse: collapse;
+  border-color: var(--border-color);
+  border-style: solid;
+}
+
+td,
+th {
+  border-width: 0 1px 1px 0;
+  line-height: 1.5;
+  padding: 1em;
+  text-align: left;
+}
+
+table {
+  border-width: 1px 0 0 1px;
+  font-size: 13px;
+  margin: 2em 0;
+  overflow-x: auto;
+  width: 100%;
+}
+
+/** Table style end */

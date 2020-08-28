@@ -24,7 +24,7 @@ For our example, let’s create a contact form. Here’s an abbreviated version 
 </client-only>
 ```
 
-Note that [`<client-only>`](https://saber.land/docs/components.html#clientonly) is a built-in Vue component in Saber, we need to render this form on client-side only because otherwise Netlify will modify the `<form>` element in initial HTML which will cause [Client Side Hydration](https://ssr.vuejs.org/guide/hydration.html) to fail.
+Note that [`<client-only>`](https://saber.land/docs/components#clientonly) is a built-in Vue component in Saber, we need to render this form on client-side only because otherwise Netlify will modify the `<form>` element in initial HTML which will cause [Client Side Hydration](https://ssr.vuejs.org/guide/hydration.html) to fail.
 
 ## Netlify bots, do you read?
 

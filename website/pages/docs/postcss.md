@@ -18,9 +18,7 @@ Add this plugin in PostCSS config file:
 ```js
 // postcss.config.js
 module.exports = {
-  plugins: [
-    require('autoprefixer')()
-  ]
+  plugins: [require('autoprefixer')()]
 }
 ```
 

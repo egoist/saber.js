@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
     "strict": true,
-    "lib": ["es2017"],
+    "lib": ["es2018"],
     "module": "commonjs",
     "target": "es2017",
     "esModuleInterop": true,
     "moduleResolution": "node",
     "noImplicitAny": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "skipLibCheck": true
   }
 }

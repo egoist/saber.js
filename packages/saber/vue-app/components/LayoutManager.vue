@@ -20,8 +20,12 @@ export default {
     const wrapSlot = slot => {
       const { markPageContent } = parent.$ssrContext || {}
       if (markPageContent) {
-        const result = h('div', null, [markPageContent[0]].concat(slot, markPageContent[1]))
-        return Array.isArray(slot)? [result] : result
+        const result = h(
+          'div',
+          null,
+          [markPageContent[0]].concat(slot, markPageContent[1])
+        )
+        return Array.isArray(slot) ? [result] : result
       }
       return slot
     }

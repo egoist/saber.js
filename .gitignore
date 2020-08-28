@@ -6,3 +6,4 @@ public
 examples/*/yarn.lock
 examples/*/package-lock.json
 packages/*/types
+*.log

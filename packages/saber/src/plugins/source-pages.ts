@@ -13,6 +13,10 @@ const sourcePagesPlugin: SaberPlugin = {
 
   apply(api) {
     api.hooks.beforeRun.tapPromise(ID, async () => {
+      api.dataStore.addData('$pages', options => {
+        return api.dataStore.findAndSort(api.pages.store, options)
+      })
+
       const pagesDir = api.resolveCwd('pages')
       const exts = api.transformers.supportedExtensions
       const filePatterns = [
@@ -49,16 +53,16 @@ const sourcePagesPlugin: SaberPlugin = {
         'manipulate-page',
         async ({ action, id, page }) => {
           // Remove all child pages
-          api.pages.removeWhere(page => Boolean(page.internal.parent))
+          api.pages.store.removeWhere(page => Boolean(page.parent))
 
           if (action === 'remove') {
             // Remove itself
-            api.pages.removeWhere(page => {
-              return page.internal.id === id
+            api.pages.store.removeWhere(page => {
+              return page.id === id
             })
           } else if (action) {
             api.pages.createPage(page)
-            await api.hooks.onCreatePage.promise(page)
+            await api.hooks.postCreatePage.promise(page)
           }
         }
       )
@@ -66,7 +70,7 @@ const sourcePagesPlugin: SaberPlugin = {
       // Write all pages
       // This is triggered by all file actions: change, add, remove
       api.hooks.emitPages.tapPromise('pages', async () => {
-        const pages = [...api.pages.values()]
+        const pages = api.pages.store.find()
         log.verbose('Emitting pages')
         // TODO: maybe write pages with limited concurrency?
         await Promise.all(
@@ -74,10 +78,7 @@ const sourcePagesPlugin: SaberPlugin = {
             if (page.internal.saved) return
 
             const newContentHash = hash(page)
-            const outPath = api.resolveCache(
-              'pages',
-              `${page.internal.id}.saberpage`
-            )
+            const outPath = api.resolveCache('pages', `${page.id}.saberpage`)
             // TODO: is there any better solution to checking if we need to write the page?
             const exists = await fs.pathExists(outPath)
             if (exists) {
@@ -102,11 +103,11 @@ const sourcePagesPlugin: SaberPlugin = {
         files.map(async file => {
           const page = api.pages.fileToPage(file)
           api.pages.createPage(page)
-          await api.hooks.onCreatePage.promise(page)
+          await api.hooks.postCreatePage.promise(page)
         })
       )
 
-      await api.hooks.onCreatePages.promise()
+      await api.hooks.postCreatePages.promise()
       await api.hooks.emitPages.promise()
 
       if (api.dev) {
@@ -137,7 +138,7 @@ const sourcePagesPlugin: SaberPlugin = {
             await api.hooks.manipulatePage.promise({ action: 'create', page })
           }
 
-          await api.hooks.onCreatePages.promise()
+          await api.hooks.postCreatePages.promise()
           await api.hooks.emitPages.promise()
           await api.hooks.emitRoutes.promise()
         }

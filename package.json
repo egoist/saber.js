@@ -1,11 +1,13 @@
 {
   "private": true,
-  "name": "saber",
+  "name": "saber-workspace",
   "scripts": {
-    "test": "npm run lint && lerna run test",
+    "test": "yarn lint && yarn test:unit",
+    "test:unit": "uvu -r ts-node/register --ignore \"/(dist|types|integration)/\"",
     "lint": "lerna run lint",
     "commit": "git-cz",
-    "prepare": "lerna run prepublishOnly"
+    "prepare": "lerna run prepublishOnly",
+    "saber": "node packages/saber/dist/cli"
   },
   "repository": {
     "url": "saberland/saber",
@@ -15,20 +17,15 @@
   "license": "MIT",
   "devDependencies": {
     "commitizen": "4.0.3",
-    "conf": "6.2.0",
-    "cz-conventional-changelog": "3.0.2",
+    "conf": "6.2.4",
     "enquirer": "^2.3.1",
     "eslint": "^6.6.0",
     "husky": "3.0.9",
-    "jest": "^24.9.0",
     "lerna": "3.18.3",
-    "lint-staged": "8.1.6",
+    "lint-staged": "10.2.11",
     "prettier": "1.18.2",
-    "typedoc": "^0.15.0",
-    "typescript": "^3.8.0-dev.20191031"
-  },
-  "resolutions": {
-    "typedoc/typescript": "^3.8.0-dev.20191031"
+    "typedoc": "^0.17.8",
+    "typescript": "^3.9.6"
   },
   "husky": {
     "hooks": {
@@ -36,19 +33,8 @@
     }
   },
   "lint-staged": {
-    "linters": {
-      "*.{json,md}": [
-        "prettier --write",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "**/dist/**",
-      "**/vendor/**",
-      "*.min.js",
-      "**/vue-renderer/app/**",
-      "**/example/**",
-      "website/**"
+    "*.{json,md,js,ts,vue,yml,css}": [
+      "prettier --write"
     ]
   },
   "workspaces": [
@@ -58,7 +44,12 @@
   ],
   "config": {
     "commitizen": {
-      "path": "cz-conventional-changelog"
+      "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "version": "0.0.0",
+  "dependencies": {
+    "ts-node": "^8.10.2",
+    "uvu": "^0.2.2"
   }
 }

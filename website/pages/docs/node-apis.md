@@ -12,7 +12,7 @@ During developing, you need to restart the server if you made any changes in thi
 For example:
 
 ```js
-exports.onCreatePage = function (page) {
+exports.postCreatePage = function(page) {
   page.foo = true
 }
 ```

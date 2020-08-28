@@ -4,4 +4,4 @@ date: 2018-02-12
 layout: post
 ---
 
-wtf is __this__ {{ 1 + 1 }}
+wtf is **this** {{ 1 + 1 }}

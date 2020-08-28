@@ -1,5 +1,10 @@
 import { struct } from 'superstruct'
-import { SaberConfig, SaberConfigPlugin, MarkdownPlugin } from '../'
+import {
+  SaberConfig,
+  SaberConfigPlugin,
+  MarkdownPlugin,
+  NonUndefined
+} from '../types'
 
 export interface ValidatedSaberConfig {
   siteConfig: SaberConfig['siteConfig'] & {

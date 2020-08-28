@@ -7,11 +7,9 @@ layout: docs
 
 An instance of the `Pages` class, it's used to store `page` ([PageInterface](./page-interface.md)).
 
-```ts
-interface Pages extends Map<id, PageInterface> {
-  // ...
-}
-```
+### `pages.store`
+
+A [Loki.js Collection](https://techfort.github.io/LokiJS/Collection.html) instance which is used to store all pages.
 
 ### `pages.createPage(page)`
 
@@ -19,7 +17,7 @@ interface Pages extends Map<id, PageInterface> {
   - `page`: `PageInterface`
 - Returns: `void`
 
-Create a new page or overwrite the existing page.
+Create a new page or overwrite the existing page in `pages.store`.
 
 ### `pages.getPagePublicFields(id)`
 
@@ -31,14 +29,6 @@ Get a page with its public fields only.
 
 Currently we only exclude `internal` and `content` properties.
 
-### `pages.removeWhere(condition)`
-
-- Params: 
-  - `condition`: `(page: PageInterface) => boolean)`
-- Returns: `void`
-
-Remove pages that match the given `condition`.
-
 ### `pages.createRedirect(config)`
 
 - Params:
@@ -47,12 +37,12 @@ Remove pages that match the given `condition`.
 
 `RedirectConfig` properties:
 
-|Property|Type|Default|Description|
-|---|---|---|---|
-|`fromPath`|`string`|N/A|Any valid URL. Must start with a forward slash|
-|`toPath`|`string`|N/A|Any valid URL. Must start with a forward slash|
-|`isPermanent`|`boolean`|`false`|This is a permanent redirect; defaults to temporary|
-|`redirectInBrowser`|`boolean`|`false`|Redirects are generally for redirecting legacy URLs to their new configuration. If you can’t update your UI for some reason, set `redirectInBrowser` to `true` and Saber will handle redirecting in the client as well.`
+| Property            | Type      | Default | Description                                                                                                                                                                                                              |
+| ------------------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `fromPath`          | `string`  | N/A     | Any valid URL. Must start with a forward slash                                                                                                                                                                           |
+| `toPath`            | `string`  | N/A     | Any valid URL. Must start with a forward slash                                                                                                                                                                           |
+| `isPermanent`       | `boolean` | `false` | This is a permanent redirect; defaults to temporary                                                                                                                                                                      |
+| `redirectInBrowser` | `boolean` | `false` | Redirects are generally for redirecting legacy URLs to their new configuration. If you can’t update your UI for some reason, set `redirectInBrowser` to `true` and Saber will handle redirecting in the client as well.` |
 
 ### `pages.getMatchedLocalePath(permalink)`
 
@@ -77,6 +67,51 @@ pages.getMatchedLocalePath('/cn/about')
 //=> '/cn'
 ```
 
+## dataSource
+
+### `dataSource.findAndSort`
+
+- Params:
+  - `options`: `Options`
+
+Find and sort data from a collection.
+
+```ts
+interface Options {
+  // Any page property
+  [prop]: {
+    // Supports mongo-like query syntax
+    $gt: new Date('2020-02-02')
+  },
+  // And a special option `$sort` for sorting
+  $sort?: {
+    // Sort by page property in `desc` or `asc` order
+    // `true` means `desc`
+    prop: 'desc' | 'asc' | boolean
+  }
+}
+```
+
+### `dataSource.addData`
+
+- Params:
+  - `name`: `string`
+  - `factory`: `DataFactory`
+
+Add data so you can inject it in your page.
+
+```ts
+// `options` is from the `injectData` option in your page
+type DataFactory = (options: any, api: Saber) => any
+```
+
+### `dataSource.removeData`
+
+- Params:
+  - `name`: `string`
+
+Remove a data by its name.
+
 ## hooks
 
 Hooks are called during Saber's build process. When developing a plugin for Saber, you might want to know where each hook is called. To learn this, search for `hooks.<hook name>.call` across the Saber source.
@@ -99,7 +134,7 @@ Depending on the hook type, `tapAsync` and `tapPromise` may also be available. H
 
 Called to filter plugins.
 
-This hook is __only__ available `saber-node.js`.
+This hook is **only** available `saber-node.js`.
 
 ```ts
 interface Plugin {
@@ -113,16 +148,15 @@ interface Plugin {
 }
 ```
 
-
-### `beforePlugins`
+### `prePlugins`
 
 - Hook Type: `AsyncSeriesHook`
 
-This hook is __only__ available `saber-node.js`.
+This hook is **only** available `saber-node.js`.
 
 Called before loading user plugins.
 
-### `afterPlugins`
+### `postPlugins`
 
 - Hook Type: `AsyncSeriesHook`
 
@@ -134,7 +168,7 @@ Called after the `apply` methods of all user plugins are executed.
 
 Called before starting creating pages for the first time.
 
-### `onCreatePage`
+### `postCreatePage`
 
 - Hook Type: `AsyncSeriesHook`
 - Params:
@@ -158,7 +192,7 @@ Called when creating a page to get the plugins and options for `markdown-it`.
 
 Called to get the options and plugins for transforming Vue template.
 
-### `onCreatePages`
+### `postCreatePages`
 
 - Hook Type: `AsyncSeriesHook`
 
@@ -194,7 +228,7 @@ Called with the `webpack-chain` instance before creating webpack compiler.
 
 Called to get the webpack config before creating webpack compiler. You should return the webpack config object in this hook.
 
-### `onCreateServer`
+### `postCreateServer`
 
 - Hook Type: `SyncHook`
 - Params:
@@ -226,7 +260,7 @@ Called to get the document html.
 
 Called after running webpack (in production mode).
 
-### `beforeExportPage`
+### `preExportPages`
 
 - Hook Type: `AsyncSeriesHook`
 - Params:
@@ -244,7 +278,7 @@ interface ExportedPage {
 }
 ```
 
-### `afterExportPage`
+### `postExportPage`
 
 - Hook Type: `AsyncSeriesHook`
 - Params:
@@ -272,9 +306,7 @@ When webpack finished compiling, this event will be emitted.
 ```js
 api.compilers.client.on('status-changed', ({ status, allCompilers }) => {
   // status: 'waiting' | 'building' | 'success' | 'error'
-  
   // allCompilers.hasError: boolean
-
   // Whether the status of every compiler is `success` or `error`
   // allCompilers.ready: boolean
 })

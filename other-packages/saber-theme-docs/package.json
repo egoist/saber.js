@@ -1,0 +1,17 @@
+{
+  "name": "saber-theme-docs",
+  "version": "0.0.0",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "dependencies": {
+    "docsearch.js": "2.6.3",
+    "dayjs": "1.8.29"
+  },
+  "devDependencies": {
+    "tailwindcss": "1.4.6",
+    "autoprefixer": "9.8.4",
+    "@tailwindcss/ui": "^0.3.0"
+  }
+}

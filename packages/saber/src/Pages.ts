@@ -3,6 +3,7 @@ import hash from 'hash-sum'
 import { slash } from 'saber-utils'
 import { log } from 'saber-log'
 import merge from 'lodash.merge'
+import { Collection } from 'lokijs'
 import getPermalink from './utils/getPermalink'
 import getPageType from './utils/getPageType'
 import { prefixAssets } from './utils/assetsAttribute'
@@ -43,8 +44,41 @@ export interface CreatePageOptions {
   file?: FileInfo
 }
 
+export interface InjectData {
+  [injectAs: string]: {
+    source: string
+    options?: {
+      [k: string]: any
+    }
+  }
+}
+
+export interface Pagination {
+  data: string
+  size?: number
+  first?: number
+}
+
+export interface PageDataPagination {
+  hasPrev: boolean
+  hasNext: boolean
+  total: number
+  current: number
+  prevLink: string | undefined
+  nextLink: string | undefined
+}
+
+export interface PageData {
+  pagination?: PageDataPagination
+  [k: string]: any
+}
+
 export interface CreatePageInput {
   type?: 'page' | 'post'
+  /** A unique ID for this page */
+  id: string
+  /** ID of parent page */
+  parent?: string
   content?: string
   /**
    * We apply different transformers based on the `contentType`
@@ -62,12 +96,11 @@ export interface CreatePageInput {
   permalink?: string
   slug?: string
   assets?: Assets
+  injectData?: InjectData
+  data?: PageData
+  pagination?: Pagination
   /** Internal info is automatically removed from your app runtime for security reasons */
   internal: {
-    /** A unique ID for this page */
-    id: string
-    /** ID of parent page */
-    parent?: string
     /**
      * Is this page a local file?
      * If it is you also need to set `absolute` and `relative`
@@ -81,6 +114,8 @@ export interface CreatePageInput {
      * Used by Saber internally for file watcher
      */
     saved?: boolean
+
+    hoistedTags?: string[]
   }
   /** You can also provide additonal data */
   [k: string]: any
@@ -88,32 +123,36 @@ export interface CreatePageInput {
 
 export interface Page {
   type: 'page' | 'post'
+  id: string
+  parent?: string
   content: string
   contentType: string
   createdAt?: Date
   updatedAt?: Date
   permalink: string
   slug?: string
+  injectData: InjectData
+  data: PageData
+  pagination?: Pagination
   internal: {
-    id: string
-    parent?: string
     isFile?: boolean
     absolute?: string
     relative?: string
     /** @private */
     saved?: boolean
+    hoistedTags?: string[]
   }
-  attributes: Page
   assets: Assets
   [k: string]: any
 }
 
-export class Pages extends Map<string, Page> {
+export class Pages {
   api: Saber
   redirectRoutes: Map<string, RedirecrtRouteConfig>
+  store: Collection<Page>
 
   constructor(api: Saber) {
-    super()
+    this.store = new Collection('pages', { disableMeta: true, unique: ['id'] })
     this.api = api
     this.redirectRoutes = new Map()
   }
@@ -125,6 +164,8 @@ export class Pages extends Map<string, Page> {
       {
         type: 'page',
         internal: {},
+        data: {},
+        injectProps: {},
         contentType: 'default'
       },
       _page
@@ -174,8 +215,8 @@ export class Pages extends Map<string, Page> {
       )
     }
 
-    if (!page.internal || !page.internal.id) {
-      throw new Error(`Page must have an internal id.`)
+    if (!page.id) {
+      throw new Error(`Page must have an unique id.`)
     }
 
     page.assets = page.assets
@@ -191,9 +232,14 @@ export class Pages extends Map<string, Page> {
     // So that it will be emitted to disk later in `emitPages` hook
     page.internal.saved = false
 
-    // Backward compatible
-    // TODO: remove in 1.0
-    page.attributes = page
+    if (page.pagination) {
+      if (!page.pagination.data) {
+        throw new Error(
+          `Invalid page option for "${page.internal.absolute ||
+            page.id}", the "data" property is required on the "pagination" option `
+        )
+      }
+    }
 
     return page as Page
   }
@@ -210,10 +256,10 @@ export class Pages extends Map<string, Page> {
     ) as RegExpExecArray // It could never be `null`
     const slug = parsedFileName[16]
     const pageInput: CreatePageInput = {
+      id: hash(file.absolute),
       slug,
       type: getPageType(slash(file.relative)),
       internal: {
-        id: hash(file.absolute),
         absolute: absolutePath,
         relative: relativePath,
         isFile: true
@@ -230,26 +276,17 @@ export class Pages extends Map<string, Page> {
 
   createPage(pageInput: CreatePageInput) {
     const page = this.normalizePage(pageInput)
-    this.set(page.internal.id, page)
-  }
-
-  removePage(id: string) {
-    this.removeWhere(page => {
-      return page.internal.id === id
-    })
-  }
-
-  removeWhere(getCondition: (page: Page) => boolean) {
-    for (const page of this.values()) {
-      const condition = getCondition(page)
-      if (condition) {
-        this.delete(page.internal.id)
-      }
+    const existing = this.store.by('id', page.id)
+    if (existing) {
+      page.$loki = existing.$loki
+      this.store.update(page)
+    } else {
+      this.store.insert(page)
     }
   }
 
   getPagePublicFields(page: string | Page) {
-    let result = typeof page === 'string' ? this.get(page) : page
+    let result = typeof page === 'string' ? this.store.by('id', page) : page
 
     if (!result) {
       throw new Error(`The page doesn't exist`)
@@ -257,10 +294,9 @@ export class Pages extends Map<string, Page> {
 
     result = Object.assign({}, result, {
       content: undefined,
-      internal: undefined
+      internal: undefined,
+      $loki: undefined
     })
-    // TODO: remove in 1.0
-    result.attributes = result
 
     return result as Omit<Page, 'content' | 'internal'>
   }
@@ -287,5 +323,15 @@ export class Pages extends Map<string, Page> {
     }
 
     return '/'
+  }
+
+  getOutputDataFilePath(pageId: string, dataKey: string) {
+    return this.api.resolveCache(
+      'data',
+      `${hash({
+        id: pageId,
+        dataKey
+      })}.json`
+    )
   }
 }

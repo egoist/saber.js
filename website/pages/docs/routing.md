@@ -13,7 +13,7 @@ Basic example, `./pages/index.vue`:
 <template>
   <div>
     <h1>Welcome to Saber!</h1>
-    <a href="/about.html">About</a>
+    <a href="/about">About</a>
   </div>
 </template>
 ```
@@ -23,8 +23,7 @@ It also works in Markdown since links are transformed to `<a>` elements as well.
 Internally, `<a>` elements are converted to a built-in component [`<saber-link>`](components.md#saberlink), so these are equivalent:
 
 ```vue
-<a href="/about.html">About</a>
-<saber-link to="/about.html">About</saber-link>
+<a href="/about">About</a> <saber-link to="/about">About</saber-link>
 ```
 
 `<saber-link>` will be rendered as `<a target="_blank" rel="noopener noreferrer">` element if the link is an absolute URL (like `https://github.com`), otherwise it's rendered as Vue Router's `<router-link>` component.
@@ -40,7 +39,7 @@ You can use the `<a>` element to reference local pages by filename:
 ...is converted to:
 
 ```html
-<saber-link to="/about.html">About</saber-link>
+<saber-link to="/about">About</saber-link>
 ```
 
 This is useful if you're not sure what the permalink is or you might change the permalink format in the future.

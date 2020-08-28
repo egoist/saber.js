@@ -74,7 +74,6 @@ excerpt: false
 ---
 ```
 
-
 ### Task List
 
 - [Specification](https://github.github.com/gfm/#task-list-items-extension-)
@@ -137,7 +136,7 @@ Saber automatically injects all markdown headings as `page.markdownHeadings`, if
 The `page.markdownHeadings` will be:
 
 ```js
-[
+;[
   {
     text: 'A page',
     slug: 'a-page',
@@ -187,9 +186,7 @@ Input:
 try {
   do_something.i_have_no_idea.what_i_am_doing()
 } catch (err) {
-  window.location.href = `https://stackoverflow.com/search?q=[js]+${
-    err.message
-  }`
+  window.location.href = `https://stackoverflow.com/search?q=[js]+${err.message}`
 }
 ```
 ````
@@ -200,9 +197,7 @@ Output:
 try {
   do_something.i_have_no_idea.what_i_am_doing()
 } catch (err) {
-  window.location.href = `https://stackoverflow.com/search?q=[js]+${
-    err.message
-  }`
+  window.location.href = `https://stackoverflow.com/search?q=[js]+${err.message}`
 }
 ```
 
@@ -272,7 +267,7 @@ If you want to override the font size or font family, you need to add CSS for bo
 .saber-highlight-mask,
 .saber-highlight-code code {
   /* Default: */
-  font-size: .875rem;
+  font-size: 0.875rem;
 }
 ```
 
@@ -282,7 +277,7 @@ Input:
 
 ````markdown
 ```js {lineNumbers:true,highlightLines:['2-5']}
-[
+;[
   {
     text: 'A page',
     slug: 'a-page',
@@ -305,7 +300,7 @@ Input:
 Output:
 
 ```js {lineNumbers:true,highlightLines:['2-5']}
-[
+;[
   {
     text: 'A page',
     slug: 'a-page',

@@ -12,4 +12,3 @@ A drop-in replacement for Vue Router's `<router-link>` component, we added addti
 ## `ClientOnly`
 
 Use this component to wrap non SSR friendly components.
-

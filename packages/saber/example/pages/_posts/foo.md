@@ -1,7 +1,7 @@
 ---
 title: sdf
 tags:
-- hello
+  - hello
 ---
 
 xxxsdfsdfdsd
@@ -16,7 +16,7 @@ sdfdsf
 
 {{ count }}
 
-__asdasd__
+**asdasd**
 
 asdsfsd
 
