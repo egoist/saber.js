@@ -38,7 +38,7 @@
     "devalue": "^2.0.0",
     "download-git-repo": "^2.0.0",
     "fast-deep-equal": "^2.0.1",
-    "file-loader": "^4.0.0",
+    "file-loader": "^6.2.0",
     "get-port": "^5.0.0",
     "hash-sum": "^2.0.0",
     "joycon": "^2.2.4",
