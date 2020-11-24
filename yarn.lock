@@ -6384,9 +6384,9 @@ hex-color-regex@^1.1.0:
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
 highlight.js@^9.15.8:
-  version "9.16.1"
-  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.16.1.tgz#827f49ca96eae006d8a2a0d5e3acd56041c26fc5"
-  integrity sha512-pyyiU56NR1XSm8M/l1QDKGGCA2n2GrcTxFahBo4v/2dH3gy4IiALczwhC9YJicyjoRh6JQWM+h3PvY1ZZ+D0+g==
+  version "9.18.5"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.5.tgz#d18a359867f378c138d6819edfc2a8acd5f29825"
+  integrity sha512-a5bFyofd/BHCX52/8i8uJkjr9DYwXIPnM/plwI6W7ezItLGqzt7X2G2nXuYSfsIJdkwwj/g9DG1LkcGJI/dDoA==
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
