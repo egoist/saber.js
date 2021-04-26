@@ -14,6 +14,6 @@
     "@snackbar/core": "^1.6.0",
     "stringify-attributes": "^2.0.0",
     "workbox-build": "^4.3.1",
-    "workbox-window": "^4.3.1"
+    "workbox-window": "^6.1.5"
   }
 }
