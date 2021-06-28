@@ -7,7 +7,7 @@
   ],
   "main": "index.js",
   "devDependencies": {
-    "prismjs": "1.17.1"
+    "prismjs": "1.24.0"
   },
   "peerDependencies": {
     "prismjs": "^1.16.0"
