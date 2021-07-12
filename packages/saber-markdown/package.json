@@ -14,7 +14,7 @@
     "@babel/core": "7.6.4",
     "builtin-modules": "3.1.0",
     "markdown-it": "10.0.0",
-    "rollup": "1.22.0",
+    "rollup": "2.53.1",
     "rollup-plugin-babel": "4.3.3",
     "rollup-plugin-commonjs": "10.1.0",
     "rollup-plugin-json": "4.0.0",
